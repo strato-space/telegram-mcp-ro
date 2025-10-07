@@ -1,4 +1,4 @@
-# Telegram MCP Server
+# Telegram MCP RO Server
 
 ![MCP Badge](https://badge.mcpx.dev)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
@@ -9,65 +9,40 @@
 
 ## 🤖 MCP in Action
 
-Here's a demonstration of the Telegram MCP capabilities in [Claude](https://docs.anthropic.com/en/docs/agents-and-tools/mcp):
+Here's a demonstration of the Telegram MCP RO capabilities in [Claude](https://docs.anthropic.com/en/docs/agents-and-tools/mcp):
 
  **Basic usage example:**
 
-![Telegram MCP in action](screenshots/1.png)
 
-1. **Example: Asking Claude to analyze chat history and send a response:**
-
-![Telegram MCP Request](screenshots/2.png)
-
-2. **Successfully sent message to the group:**
-
-![Telegram MCP Result](screenshots/3.png)
+1. **Example: Asking Claude to analyze chat history:**
 
 As you can see, the AI can seamlessly interact with your Telegram account, retrieving and displaying your chats, messages, and other data in a natural way.
 
 ---
 
-A full-featured Telegram integration for Claude, Cursor, and any MCP-compatible client, powered by [Telethon](https://docs.telethon.dev/) and the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). This project lets you interact with your Telegram account programmatically, automating everything from messaging to group management.
+A read-only Telegram integration for Claude, Cursor, and any MCP-compatible client, powered by [Telethon](https://docs.telethon.dev/) and the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). This project lets you inspect and analyze your Telegram account programmatically without mutating chats.
 
 
 ---
 
 ## 🚀 Features & Tools
 
-This MCP server exposes a huge suite of Telegram tools. **Every major Telegram/Telethon feature is available as a tool!**
+This MCP server exposes a rich suite of Telegram tools focused on safe, read-only inspection.
 
 ### Chat & Group Management
 - **get_chats(page, page_size)**: Paginated list of chats
 - **list_chats(chat_type, limit)**: List chats with metadata and filtering
 - **get_chat(chat_id)**: Detailed info about a chat
-- **create_group(title, user_ids)**: Create a new group
-- **create_channel(title, about, megagroup)**: Create a channel or supergroup
-- **edit_chat_title(chat_id, title)**: Change chat/group/channel title
-- **delete_chat_photo(chat_id)**: Remove chat/group/channel photo
-- **leave_chat(chat_id)**: Leave a group or channel
 - **get_participants(chat_id)**: List all participants
 - **get_admins(chat_id)**: List all admins
 - **get_banned_users(chat_id)**: List all banned users
-- **promote_admin(chat_id, user_id)**: Promote user to admin
-- **demote_admin(chat_id, user_id)**: Demote admin to user
-- **ban_user(chat_id, user_id)**: Ban user
-- **unban_user(chat_id, user_id)**: Unban user
 - **get_invite_link(chat_id)**: Get invite link
 - **export_chat_invite(chat_id)**: Export invite link
-- **import_chat_invite(hash)**: Join chat by invite hash
-- **join_chat_by_link(link)**: Join chat by invite link
+- **join_chat_by_link(link)**: *Removed in read-only variant*
 
 ### Messaging
 - **get_messages(chat_id, page, page_size)**: Paginated messages
 - **list_messages(chat_id, limit, search_query, from_date, to_date)**: Filtered messages
-- **send_message(chat_id, message)**: Send a message
-- **reply_to_message(chat_id, message_id, text)**: Reply to a message
-- **edit_message(chat_id, message_id, new_text)**: Edit your message
-- **delete_message(chat_id, message_id)**: Delete a message
-- **forward_message(from_chat_id, message_id, to_chat_id)**: Forward a message
-- **pin_message(chat_id, message_id)**: Pin a message
-- **unpin_message(chat_id, message_id)**: Unpin a message
-- **mark_as_read(chat_id)**: Mark all as read
 - **get_message_context(chat_id, message_id, context_size)**: Context around a message
 - **get_history(chat_id, limit)**: Full chat history
 - **get_pinned_messages(chat_id)**: List pinned messages
@@ -76,11 +51,6 @@ This MCP server exposes a huge suite of Telegram tools. **Every major Telegram/T
 ### Contact Management
 - **list_contacts()**: List all contacts
 - **search_contacts(query)**: Search contacts
-- **add_contact(phone, first_name, last_name)**: Add a contact
-- **delete_contact(user_id)**: Delete a contact
-- **block_user(user_id)**: Block a user
-- **unblock_user(user_id)**: Unblock a user
-- **import_contacts(contacts)**: Bulk import contacts
 - **export_contacts()**: Export all contacts as JSON
 - **get_blocked_users()**: List blocked users
 - **get_contact_ids()**: List all contact IDs
@@ -89,8 +59,6 @@ This MCP server exposes a huge suite of Telegram tools. **Every major Telegram/T
 
 ### User & Profile
 - **get_me()**: Get your user info
-- **update_profile(first_name, last_name, about)**: Update your profile
-- **delete_profile_photo()**: Remove your profile photo
 - **get_user_photos(user_id, limit)**: Get a user's profile photos
 - **get_user_status(user_id)**: Get a user's online status
 
@@ -105,15 +73,9 @@ This MCP server exposes a huge suite of Telegram tools. **Every major Telegram/T
 ### Stickers, GIFs, Bots
 - **get_sticker_sets()**: List sticker sets
 - **get_bot_info(bot_username)**: Get info about a bot
-- **set_bot_commands(bot_username, commands)**: Set bot commands (bot accounts only)
 
 ### Privacy, Settings, and Misc
 - **get_privacy_settings()**: Get privacy settings
-- **set_privacy_settings(key, allow_users, disallow_users)**: Set privacy settings
-- **mute_chat(chat_id)**: Mute notifications
-- **unmute_chat(chat_id)**: Unmute notifications
-- **archive_chat(chat_id)**: Archive a chat
-- **unarchive_chat(chat_id)**: Unarchive a chat
 - **get_recent_actions(chat_id)**: Get recent admin actions
 
 ## Removed Functionality
@@ -121,6 +83,48 @@ This MCP server exposes a huge suite of Telegram tools. **Every major Telegram/T
 Please note that tools requiring direct file path access on the server (`send_file`, `download_media`, `set_profile_photo`, `edit_chat_photo`, `send_voice`, `send_sticker`, `upload_file`) have been removed from `main.py`. This is due to limitations in the current MCP environment regarding handling file attachments and local file system paths.
 
 Additionally, GIF-related tools (`get_gif_search`, `get_saved_gifs`, `send_gif`) have been removed due to ongoing issues with reliability in the Telethon library or Telegram API interactions.
+
+- Administrative chat controls (`promote_admin`, `demote_admin`) and dialog curation actions (`archive_chat`, `unarchive_chat`) have also been removed to keep the server strictly read-only.
+
+- **create_channel(title, about, megagroup)**: Create a channel or supergroup
+- **edit_chat_title(chat_id, title)**: Change chat/group/channel title
+- **delete_chat_photo(chat_id)**: Remove chat/group/channel photo
+- **leave_chat(chat_id)**: Leave a group or channel
+- **create_group(title, user_ids)**: Create a new group
+
+- **promote_admin(chat_id, user_id)**: Promote user to admin
+- **demote_admin(chat_id, user_id)**: Demote admin to user
+- **ban_user(chat_id, user_id)**: Ban user
+- **unban_user(chat_id, user_id)**: Unban user
+- **import_chat_invite(hash)**: Join chat by invite hash
+
+- **join_chat_by_link(link)**: Join chat by invite link
+
+- **send_message(chat_id, message)**: Send a message
+- **reply_to_message(chat_id, message_id, text)**: Reply to a message
+- **edit_message(chat_id, message_id, new_text)**: Edit your message
+- **delete_message(chat_id, message_id)**: Delete a message
+- **forward_message(from_chat_id, message_id, to_chat_id)**: Forward a message
+- **pin_message(chat_id, message_id)**: Pin a message
+- **unpin_message(chat_id, message_id)**: Unpin a message
+- **mark_as_read(chat_id)**: Mark all as read
+
+- **add_contact(phone, first_name, last_name)**: Add a contact
+- **delete_contact(user_id)**: Delete a contact
+- **block_user(user_id)**: Block a user
+- **unblock_user(user_id)**: Unblock a user
+- **import_contacts(contacts)**: Bulk import contacts
+
+- **delete_profile_photo()**: Remove your profile photo
+- **update_profile(first_name, last_name, about)**: Update your profile
+
+- **set_bot_commands(bot_username, commands)**: Set bot commands (bot accounts only)
+
+- **set_privacy_settings(key, allow_users, disallow_users)**: Set privacy settings
+- **mute_chat(chat_id)**: Mute notifications
+- **unmute_chat(chat_id)**: Unmute notifications
+- **archive_chat(chat_id)**: Archive a chat
+- **unarchive_chat(chat_id)**: Unarchive a chat
 
 ---
 

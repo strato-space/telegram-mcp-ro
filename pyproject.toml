@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 package-mode = false
 
 [project]
-name = "telegram-mcp"
-version = "2.0.1"
-description = "Telegram integration for Claude via the Model Context Protocol"
+name = "telegram-mcp-ro"
+version = "2.1.0"
+description = "Read-only Telegram integration for Claude via the Model Context Protocol"
 readme = "README.md"
 authors = [
     {name = "chigwell"},
@@ -33,8 +33,8 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/chigwell/telegram-mcp"
-"Bug Tracker" = "https://github.com/chigwell/telegram-mcp/issues"
+"Homepage" = "https://github.com/strato-space/telegram-mcp-ro"
+"Bug Tracker" = "https://github.com/strato-space/telegram-mcp-ro/issues"
 
 [tool.black]
 line-length = 99
