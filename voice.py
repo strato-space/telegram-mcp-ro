@@ -5,6 +5,8 @@ This script imports ``main.py`` so that all global initialisation stays in one
 place (Telegram client, logging, MCP tool registrations). It then defines its
 own ``if __name__ == "__main__"`` block to start the server, allowing voice-
 specific overrides to be added here without touching ``main.py``.
+
+v:0.1
 """
 
 from __future__ import annotations
